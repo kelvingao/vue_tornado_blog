@@ -1,35 +1,20 @@
 <template lang='pug'>
   #app
     top
-    login
-   
+    router-view
+    bottom
 </template>
 <script>
+import axios from 'axios'
 import top from '@/components/layout/header.vue'
-import login from '@/components/login.vue'
+import bottom from '@/components/layout/footer.vue'
 
 export default {
   name: 'app',
   components: {
     top,
-    login
+    bottom
   },
-  data() {
-    return {
-      socket: null,
-    }
-  },
-  mounted() {
-    this.socket = new WebSocket('ws://localhost:5000/ws');
-    // WebSocket events handler
-    this.socket.onopen = evt => {
-      console.log('Socket: WebSocket is open now.');
-      this.socket.send('Hello, server!');
-    }
-    // this.socket.onerror = err => console.log('Socket: WebSocket error observed.');
-    // this.socket.onclose = evt => console.log('Socket: Websocket is closed.');
-    // this.socket.onmessage = msg => this.onMessageCallback(msg);
-  }
 }
 </script>
 
