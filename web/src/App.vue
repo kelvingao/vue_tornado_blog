@@ -2,7 +2,7 @@
   #app
     top
     router-view
-    bottom
+    //- bottom
 </template>
 <script>
 import axios from 'axios'

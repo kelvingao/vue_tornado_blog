@@ -9,7 +9,7 @@
               b-form-group#exampleInputGroup1(label='Email address:', label-for='exampleInput1')
                 b-form-input#exampleInput1(type='email', v-model='form.email', required='', placeholder='Enter email')
               b-form-group#exampleInputGroup2(label='Password:', label-for='exampleInput2')
-                b-form-input#exampleInput2(type='password', v-model='form.password', required='', placeholder='Enter name')
+                b-form-input#exampleInput2(type='password', v-model='form.password', required='', placeholder='Enter password')
               b-form-group#exampleGroup4
                 b-form-checkbox-group#exampleChecks(v-model='form.checked')
                   b-form-checkbox(value='remember') Remember me

@@ -1,7 +1,7 @@
 <template lang='pug'>
   #top
     b-navbar.nav-background(toggleable='lg', type='dark')
-      b-navbar-brand(href='/') kethoughts.cms
+      b-navbar-brand(href='/') kethoughts
       b-navbar-toggle(target='nav_collapse')
       b-collapse#nav_collapse(is-nav='')
         b-navbar-nav
@@ -17,12 +17,8 @@
           b-dropdown-item(href='#') ES
           b-dropdown-item(href='#') RU
           b-dropdown-item(href='#') FA
-        b-nav-item-dropdown(right='')
-          // Using button-content slot
-          template(slot='button-content')
-            em User
-          b-dropdown-item(href='#') Profile
-          b-dropdown-item(href='#') Signout
+      b-navbar-nav
+          b-nav-item(href='/login') Sign In
 
 </template>
 
