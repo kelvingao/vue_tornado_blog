@@ -39,7 +39,7 @@ from tornado.options import define, options
 
 logger = createLogger(__name__, level=logging.INFO)
 
-define("port", default=8080, help="run on the given port", type=int)
+define("port", default=5000, help="run on the given port", type=int)
 define("db_host", default="127.0.0.1", help="blog database host")
 define("db_port", default=5432, help="blog database port")
 define("db_database", default="blog", help="blog database name")
@@ -123,6 +123,18 @@ class BaseHandler(tornado.web.RequestHandler):
 
     async def any_author_exists(self):
         return bool(await self.query("SELECT * FROM authors LIMIT 1"))
+
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with, content-type, access-token")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        # self.set_header('Access-Control-Allow-Credentials', 'true')
+        # self.set_header("Access-Control-Expose-Headers", "*")
+
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()
 
 
 class ComposeHandler(BaseHandler):
