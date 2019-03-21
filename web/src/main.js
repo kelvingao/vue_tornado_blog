@@ -7,6 +7,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 
+import store from './store'
+
 import login from '@/components/login.vue'
 import post from '@/components/post.vue'
 import blog from '@/components/blog.vue'
@@ -28,5 +30,6 @@ const router = new VueRouter({
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')

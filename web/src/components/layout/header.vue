@@ -17,8 +17,11 @@
           b-dropdown-item(href='#') ES
           b-dropdown-item(href='#') RU
           b-dropdown-item(href='#') FA
-      b-navbar-nav
-          b-nav-item(href='/login') Sign In
+      b-navbar-nav(v-if='!isLogged')
+          b-nav-item(href='/login') login
+          b-nav-item(href='/register') Sign Up
+      b-navbar-nav(v-if='isLogged')
+          b-nav-item(href='/logout') Kelvingao
 
 </template>
 
