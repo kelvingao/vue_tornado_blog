@@ -18,11 +18,19 @@ Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 
+const ifAuthenticated = (to, from, next) => {
+  if (store.getters.isAuthenticated) {
+    next()
+    return
+  }
+  next('/login')
+}
+
 const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', redirect: '/blog' },
-    { path: '/blog', component: blog },
+    { path: '/blog', component: blog, beforeEnter: ifAuthenticated },
     { path: '/login', component: login },
     { path: '/post/:id', component: post }
   ]

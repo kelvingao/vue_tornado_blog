@@ -44,10 +44,10 @@ export default {
       evt.preventDefault()
       // alert(JSON.stringify(this.form))
 
-      axios.post("http://localhost:5000/login?email=" + this.form.email + "&password=" + this.form.password)
-        .then((resp) => {
-          this.$store.commit('saveToken', resp.data.token)
-          this.$router.push('/blog')
+      const { email, password } = this.form
+      this.$store.dispatch('AUTH_REQUEST', { email, password })
+        .then(() => {
+          this.$router.push('/')
         })
         .catch((e) => {
           console.error(e)

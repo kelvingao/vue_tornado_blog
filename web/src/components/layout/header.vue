@@ -17,16 +17,29 @@
           b-dropdown-item(href='#') ES
           b-dropdown-item(href='#') RU
           b-dropdown-item(href='#') FA
-      b-navbar-nav(v-if='!isLogged')
+      b-navbar-nav(v-if='!isAuthenticated')
           b-nav-item(href='/login') login
           b-nav-item(href='/register') Sign Up
-      b-navbar-nav(v-if='isLogged')
-          b-nav-item(href='/logout') Kelvingao
+      b-navbar-nav(v-if='isAuthenticated')
+          b-nav-item(@click="logout") Kelvingao
 
 </template>
 
 <script>
-export default {}
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters([
+      'isAuthenticated'
+    ])
+  },
+  methods: {
+    logout () {
+        this.$store.dispatch('AUTH_LOGOUT').then(() => this.$router.push('/login'))
+    }
+  }
+}
 </script>
 
 <style>
