@@ -10,9 +10,11 @@ def authenticated(func):
 
     async def wrapper(self, *args, **kwargs):
         if not self.current_user:
+            print('self.current_user is not set....')
             res_data = {}
-            token = self.request.headers.get("token")
+            token = self.request.headers.get("Authorization")
             if token:
+                print('decode token in auth module')
                 try:
                     send_data = jwt.decode(
                         token, self.settings["secret_key"],
@@ -41,7 +43,8 @@ def authenticated(func):
                 self.set_status(401)
                 res_data["content"] = "缺少token"
 
-            self.write(res_data)
-
+                self.write(res_data)
+        else:
+            result = await func(self, *args, **kwargs)
+            return result
     return wrapper
-    

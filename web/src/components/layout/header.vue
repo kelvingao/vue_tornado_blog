@@ -12,15 +12,11 @@
         b-nav-form
           b-form-input.mr-sm-2(size='sm', type='text', placeholder='Search')
             b-button.my-2.my-sm-0(size='sm', type='submit') Search
-        b-nav-item-dropdown(text='Lang', right='')
-          b-dropdown-item(href='#') EN
-          b-dropdown-item(href='#') ES
-          b-dropdown-item(href='#') RU
-          b-dropdown-item(href='#') FA
-      b-navbar-nav(v-if='!isAuthenticated')
+        b-navbar-nav(v-if='!isAuthenticated')
           b-nav-item(href='/login') login
           b-nav-item(href='/register') Sign Up
-      b-navbar-nav(v-if='isAuthenticated')
+        b-navbar-nav(v-if='isAuthenticated')
+          b-nav-item(href='/compose') New Post
           b-nav-item(@click="logout") Kelvingao
 
 </template>

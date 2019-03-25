@@ -12,7 +12,7 @@ const AUTH_LOGOUT = 'AUTH_LOGOUT'
 export default new Vuex.Store({
 
   state: {
-    token: localStorage.getItem('user-token') || '',
+    token: localStorage.getItem('Authorization') || '',
     status: ''
   },
 
@@ -41,13 +41,14 @@ export default new Vuex.Store({
         axios.post('http://localhost:5000/login?email=' + auth.email + '&password=' + auth.password)
           .then(resp => {
             const token = resp.data.token
-            localStorage.setItem('user-token', token) // store the token in localstorage
+            localStorage.setItem('Authorization', token) // store the token in localstorage
+            axios.defaults.headers.common['Authorization'] = token
             commit(AUTH_SUCCESS, token)
             resolve(resp)
           })
           .catch(err => {
             commit(AUTH_ERROR, err)
-            localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+            localStorage.removeItem('Authorization') // if the request fails, remove any possible user token if possible
             reject(err)
           })
       })
@@ -55,7 +56,7 @@ export default new Vuex.Store({
     [AUTH_LOGOUT]: ({ commit }) => {
       return new Promise((resolve, reject) => {
         commit(AUTH_LOGOUT)
-        localStorage.removeItem('user-token') // clear your user's token from localstorage
+        localStorage.removeItem('Authorization') // clear your user's token from localstorage
         // remove the axios default header
         delete axios.defaults.headers.common['Authorization']
         resolve()

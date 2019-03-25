@@ -1,15 +1,7 @@
 <template lang="pug">
   article.col-sm-12
     h1 {{ post.title }}
-    p {{ post.body }}
-    
-    h2 Discussion
-    button.btn.btn-primary(@click='showComments', v-if='!showCommentBox') show comments
-    ul.list-group(v-if='showCommentBox')
-      li.list-group-item(v-for='comment in comments')
-        strong {{ comment.email }}
-        em wrote:
-        |  {{ comment.body }}
+    p {{ post.markdown }}
 </template>
 
 <script>
@@ -23,7 +15,8 @@ export default {
     }
   },
   created() {
-    axios.get("http://jsonplaceholder.typicode.com/posts/" + this.$route.params.id)
+    console.log(this.$route.params)
+    axios.get("http://localhost:5000/blog/" + this.$route.params.slug)
       .then((resp) => {
         this.post = resp.data
       })
@@ -32,15 +25,15 @@ export default {
       })
   },
   methods: {
-    showComments(){
-      axios.get("http://jsonplaceholder.typicode.com/comments?postId=" + this.$route.params.id)
-        .then((resp) => {
-          this.comments = resp.data
-        })
-        .catch((e) => {
-          console.error(e)
-        })
-    }
+    // showComments(){
+    //   axios.get("http://jsonplaceholder.typicode.com/comments?postId=" + this.$route.params.id)
+    //     .then((resp) => {
+    //       this.comments = resp.data
+    //     })
+    //     .catch((e) => {
+    //       console.error(e)
+    //     })
+    // }
   }
 }
 </script>

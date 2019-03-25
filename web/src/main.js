@@ -12,6 +12,7 @@ import store from './store'
 import login from '@/components/login.vue'
 import post from '@/components/post.vue'
 import blog from '@/components/blog.vue'
+import compose from '@/components/compose.vue'
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue)
@@ -32,7 +33,8 @@ const router = new VueRouter({
     { path: '/', redirect: '/blog' },
     { path: '/blog', component: blog, beforeEnter: ifAuthenticated },
     { path: '/login', component: login },
-    { path: '/post/:id', component: post }
+    { path: '/blog/:slug', component: post },
+    { path: '/compose', component: compose }
   ]
 });
 
