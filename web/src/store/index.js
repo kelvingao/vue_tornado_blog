@@ -38,7 +38,7 @@ export default new Vuex.Store({
     [AUTH_REQUEST]:({ commit }, auth) => {
       return new Promise((resolve, reject) => {
         commit(AUTH_REQUEST)
-        axios.post('http://localhost:5000/login?email=' + auth.email + '&password=' + auth.password)
+        axios.post('http://101.236.53.47:8080/login?email=' + auth.email + '&password=' + auth.password)
           .then(resp => {
             const token = resp.data.token
             localStorage.setItem('Authorization', token) // store the token in localstorage
