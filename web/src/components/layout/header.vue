@@ -13,10 +13,10 @@
           b-form-input.mr-sm-2(size='sm', type='text', placeholder='Search')
             b-button.my-2.my-sm-0(size='sm', type='submit') Search
         b-navbar-nav(v-if='!isAuthenticated')
-          b-nav-item(href='/login') login
-          b-nav-item(href='/register') Sign Up
+          b-nav-item(to='/login') login
+          b-nav-item(to='/register') Sign Up
         b-navbar-nav(v-if='isAuthenticated')
-          b-nav-item(href='/compose') New Post
+          b-nav-item(to='/compose') New Post
           b-nav-item(@click="logout") Kelvingao
 
 </template>

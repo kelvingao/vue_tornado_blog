@@ -151,9 +151,10 @@ class datetimeJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class BlogHandler(BaseHandler):
+class PostsHandler(BaseHandler):
     async def get(self):
         id = self.get_argument("id", None)
+        limit = self.get_argument("per_page", None)
         entry = None
 
         if id:
@@ -162,7 +163,7 @@ class BlogHandler(BaseHandler):
 
         else:
             entries = await self.query(
-                "SELECT * FROM entries ORDER BY published DESC LIMIT 5"
+                f"SELECT * FROM entries ORDER BY published DESC LIMIT { limit }"
             )
             if not entries:
                 return
@@ -296,7 +297,7 @@ class Application(tornado.web.Application):
             (r"/login", LoginHandler),
             (r"/register", RegisterHandler),
             (r"/compose", ComposeHandler),
-            (r"/blog", BlogHandler),
+            (r"/posts", PostsHandler),
             (r"/blog/([^/]+)", PostHandler)
         ]
         settings = dict(

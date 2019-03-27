@@ -19,7 +19,7 @@ import 'quill/dist/quill.bubble.css'
 
 import login from '@/components/login.vue'
 import post from '@/components/post.vue'
-import blog from '@/components/blog.vue'
+import posts from '@/components/widgets/posts.vue'
 import compose from '@/components/compose.vue'
 
 Vue.use(VueRouter);
@@ -41,12 +41,12 @@ const ifAuthenticated = (to, from, next) => {
 }
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   routes: [
-    { path: '/', redirect: '/blog' },
-    { path: '/blog', component: blog  },
+    { path: '/', redirect: '/posts' },
+    { path: '/posts', component: posts },
+    { path: '/posts/:postSlug', component: post  },
     { path: '/login', component: login },
-    { path: '/blog/:slug', component: post },
     { path: '/compose', component: compose, beforeEnter: ifAuthenticated }
   ]
 });

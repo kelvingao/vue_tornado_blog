@@ -1,70 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+
+import auth from './modules/auth'
+import posts from './modules/posts'
 
 Vue.use(Vuex);
 
-const AUTH_REQUEST = 'AUTH_REQUEST'
-const AUTH_SUCCESS = 'AUTH_SUCCESS'
-const AUTH_ERROR = 'AUTH_ERROR'
-const AUTH_LOGOUT = 'AUTH_LOGOUT'
-
 export default new Vuex.Store({
-
-  state: {
-    token: localStorage.getItem('Authorization') || '',
-    status: ''
+  modules: {
+    auth,
+    posts
   },
-
-  mutations: {
-    [AUTH_REQUEST]: (state) => {
-      state.status = 'loading'
-    },
-    [AUTH_SUCCESS]: (state, token) => {
-      state.status = 'success'
-      state.token = token
-    },
-    [AUTH_ERROR]: (state) => {
-      state.status = 'error'
-    },
-    [AUTH_LOGOUT]: (state) => {
-      state.status = 'logout'
-      state.token = ''
-    },
-
-  },
-
-  actions: {
-    [AUTH_REQUEST]:({ commit }, auth) => {
-      return new Promise((resolve, reject) => {
-        commit(AUTH_REQUEST)
-        axios.post('http://101.236.53.47:8080/login?email=' + auth.email + '&password=' + auth.password)
-          .then(resp => {
-            const token = resp.data.token
-            localStorage.setItem('Authorization', token) // store the token in localstorage
-            axios.defaults.headers.common['Authorization'] = token
-            commit(AUTH_SUCCESS, token)
-            resolve(resp)
-          })
-          .catch(err => {
-            commit(AUTH_ERROR, err)
-            localStorage.removeItem('Authorization') // if the request fails, remove any possible user token if possible
-            reject(err)
-          })
-      })
-    },
-    [AUTH_LOGOUT]: ({ commit }) => {
-      return new Promise((resolve, reject) => {
-        commit(AUTH_LOGOUT)
-        localStorage.removeItem('Authorization') // clear your user's token from localstorage
-        // remove the axios default header
-        delete axios.defaults.headers.common['Authorization']
-        resolve()
-      })
-  }
-  },
-
-  getters:{
-    isAuthenticated: state => !!state.token,
-  }
 })
