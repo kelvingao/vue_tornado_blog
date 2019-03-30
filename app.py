@@ -134,7 +134,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with, content-type, access-token,authorization")
-        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, DELETE, OPTIONS')
         # self.set_header('Access-Control-Allow-Credentials', 'true')
         # self.set_header("Access-Control-Expose-Headers", "*")
 
@@ -155,10 +155,15 @@ class PostsHandler(BaseHandler):
     async def get(self):
         id = self.get_argument("id", None)
         limit = self.get_argument("per_page", None)
+        slug = self.get_argument("slug", None)
         entry = None
 
         if id:
             entry = await self.queryone("SELECT * FROM entries WHERE id = %s", int(id))
+            self.write(json.dumps(entry, cls=datetimeJSONEncoder))
+
+        if slug:
+            entry = await self.queryone("SELECT * FROM entries WHERE slug = %s", slug)
             self.write(json.dumps(entry, cls=datetimeJSONEncoder))
 
         else:
@@ -169,6 +174,13 @@ class PostsHandler(BaseHandler):
                 return
 
             self.write(json.dumps(entries, cls=datetimeJSONEncoder))
+
+    async def delete(self):
+        id = self.get_argument("id", None)
+        logger.info(f'delete post of id : {id}')
+
+        if id:
+            await self.execute("DELETE FROM entries WHERE id = %s", int(id))
 
 
 class PostHandler(BaseHandler):

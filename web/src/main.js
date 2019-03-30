@@ -45,7 +45,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', redirect: '/posts' },
     { path: '/posts', component: posts },
-    { path: '/posts/:postSlug', component: post  },
+    { path: '/posts/:slug', component: post  },
     { path: '/login', component: login },
     { path: '/compose', component: compose, beforeEnter: ifAuthenticated }
   ]
