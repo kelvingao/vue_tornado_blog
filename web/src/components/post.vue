@@ -5,7 +5,7 @@
         .container
           section.col-sm-12
             h1 {{ post.title }}
-            div(v-html= "post.html")
+            div(v-html= "post.markdown")
             .detail-admin
               //- p 发布于 {{ post.published | formatDate('yyyy-MM-dd') }}
               //- p  更新于 {{ post.updated | formatDate('yyyy-MM-dd') }}

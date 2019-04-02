@@ -1,23 +1,41 @@
 <template lang='pug'>
   #top
-    b-navbar.nav-background(toggleable='lg', type='dark')
-      b-navbar-brand(href='/') kethoughts
-      b-navbar-toggle(target='nav_collapse')
-      b-collapse#nav_collapse(is-nav='')
-        b-navbar-nav
-          b-nav-item(href='#') Link
-          b-nav-item(href='#', disabled='') Disabled
-      // Right aligned nav items
-      b-navbar-nav.ml-auto
-        b-nav-form
-          b-form-input.mr-sm-2(size='sm', type='text', placeholder='Search')
-            b-button.my-2.my-sm-0(size='sm', type='submit') Search
-        b-navbar-nav(v-if='!isAuthenticated')
-          b-nav-item(to='/login') login
-          b-nav-item(to='/register') Sign Up
-        b-navbar-nav(v-if='isAuthenticated')
-          b-nav-item(to='/compose') New Post
-          b-nav-item(@click="logout") Kelvingao
+    nav.navbar.has-shadow
+      .container
+        .navbar-brand
+          router-link.navbar-item.ispaddingless.brand-item(to='/')
+            //- img(src='images/devmarketer-logo.png' alt='KeThoughts logo')
+            span.text-logo.is-primary Kethoughts.com
+          router-link.navbar-item.is-tab.is-hidden-mobile.m-l-10(to='#') Learn
+          router-link.navbar-item.is-tab.is-hidden-mobile(to='#') Discuss
+          router-link.navbar-item.is-tab.is-hidden-mobile(to='#') Share
+        .navbar-end.navbar-item
+          b-input(placeholder='Search...', type='search' icon="search")
+          button.button.is-primary Search
+        .navbar-end.nav-menu(v-if="!isAuthenticated")
+          router-link.navbar-item.is-tab(to='/login') Login 
+          router-link.navbar-item.is-tab(to='/register') Sign Up
+        .navbar-end.nav-menu(v-else)
+          .navbar-item.has-dropdown.is-hoverable
+            .navbar-link Hey, Superadministrator
+            .navbar-dropdown.is-right
+              router-link.navbar-item(to='#')
+                span.icon
+                  i.fa.fa-fw.fa-user-circle-o.m-r-5
+                |&nbsp;Profile
+              router-link.navbar-item(to='#')
+                span.icon
+                  i.fa.fa-fw.fa-bell.m-r-5
+                |&nbsp;Notifications
+              router-link.navbar-item(to="/dashboard")
+                span.icon
+                  i.fa.fa-fw.fa-cog.m-r-5
+                |&nbsp;Manage
+              hr.navbar-divider
+              router-link.navbar-item(@click.native="logout" to='/login')
+                span.icon
+                  .fa.fa-fw.fa-sign-out.m-r-5
+                |&nbsp;Logout
 
 </template>
 
@@ -32,14 +50,19 @@ export default {
   },
   methods: {
     logout () {
-        this.$store.dispatch('AUTH_LOGOUT').then(() => this.$router.push('/login'))
+        this.$store.dispatch('AUTH_LOGOUT')
     }
   }
 }
 </script>
 
-<style>
-.nav-background {
-  background: #353535;
-}
+<style lang="scss" scoped>
+  /deep/ .text-logo {
+    border-radius: 5px;
+    // color: whitesmoke;
+    font-size: 150%;
+    font-weight: bold;
+    background-color: whitesmoke;
+    padding: 5px;
+  }
 </style>

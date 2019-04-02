@@ -42,7 +42,7 @@ from utils import createLogger
 from tornado.options import define, options
 from time import time as timetime
 
-logger = createLogger(__name__, level=logging.INFO)
+logger = createLogger(__name__, level=logging.DEBUG)
 
 define("port", default=5000, help="run on the given port", type=int)
 define("db_host", default="127.0.0.1", help="blog database host")
@@ -135,8 +135,8 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with, content-type, access-token,authorization")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, DELETE, OPTIONS')
-        # self.set_header('Access-Control-Allow-Credentials', 'true')
-        # self.set_header("Access-Control-Expose-Headers", "*")
+        self.set_header('Access-Control-Allow-Credentials', 'true')
+        self.set_header("Access-Control-Expose-Headers", "*")
 
     def options(self):
         # no body
@@ -182,6 +182,58 @@ class PostsHandler(BaseHandler):
         if id:
             await self.execute("DELETE FROM entries WHERE id = %s", int(id))
 
+    @authenticated
+    async def post(self):
+        id = self.get_argument("id", None)
+
+        data = json.loads(self.request.body)
+
+        title = data["title"]
+        slug = data["slug"]
+        text = data["content"]["rendered"]
+        html = markdown.markdown(text)
+
+        if id:
+            logger.info('edit post...')
+            try:
+                entry = await self.queryone(
+                    "SELECT * FROM entries WHERE id = %s", int(id)
+                )
+            except NoResultError:
+                raise tornado.web.HTTPError(404)
+            slug = entry.slug
+            await self.execute(
+                "UPDATE entries SET title = %s, markdown = %s, html = %s "
+                "WHERE id = %s",
+                title,
+                text,
+                html,
+                int(id),
+            )
+        else:
+            logger.info('create post...')
+            # slug = unicodedata.normalize("NFKD", title)
+            # slug = re.sub(r"[^\w]+", " ", slug)
+            # slug = "-".join(slug.lower().strip().split())
+            # slug = slug.encode("ascii", "ignore").decode("ascii")
+            if not slug:
+                slug = "entry"
+            while True:
+                e = await self.query("SELECT * FROM entries WHERE slug = %s", slug)
+                if not e:
+                    break
+                slug += "-2"
+            await self.execute(
+                "INSERT INTO entries (author_id,title,slug,markdown,html,published,updated)"
+                "VALUES (%s,%s,%s,%s,%s,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",
+                self.current_user['id'],
+                title,
+                slug,
+                text,
+                html,
+            )
+        # self.redirect("/entry/" + slug)
+
 
 class PostHandler(BaseHandler):
     async def get(self, slug):
@@ -196,8 +248,10 @@ class ComposeHandler(BaseHandler):
     @authenticated
     async def post(self):
         id = self.get_argument("id", None)
+
         title = self.get_argument("title")
-        text = self.get_argument("markdown")
+        slug = self.get_argument("slug")
+        text = self.get_argument("content")
         html = markdown.markdown(text)
         if id:
             logger.info('edit post...')
@@ -218,10 +272,10 @@ class ComposeHandler(BaseHandler):
             )
         else:
             logger.info('new posting...')
-            slug = unicodedata.normalize("NFKD", title)
-            slug = re.sub(r"[^\w]+", " ", slug)
-            slug = "-".join(slug.lower().strip().split())
-            slug = slug.encode("ascii", "ignore").decode("ascii")
+            # slug = unicodedata.normalize("NFKD", title)
+            # slug = re.sub(r"[^\w]+", " ", slug)
+            # slug = "-".join(slug.lower().strip().split())
+            # slug = slug.encode("ascii", "ignore").decode("ascii")
             if not slug:
                 slug = "entry"
             while True:

@@ -1,31 +1,29 @@
 <template lang='pug'>
   #login
-    b-container
-      b-row.mt-5(align-h="center")
-        b-col(cols="5")
-          b-card.p-3
-            h3.mb-4 Login
-            b-form(@submit='onSubmit', @reset='onReset', v-if='show')
-              b-form-group#exampleInputGroup1(label='Email address:', label-for='exampleInput1')
-                b-form-input#exampleInput1(type='email', v-model='form.email', required='', placeholder='Enter email')
-              b-form-group#exampleInputGroup2(label='Password:', label-for='exampleInput2')
-                b-form-input#exampleInput2(type='password', v-model='form.password', required='', placeholder='Enter password')
-              b-form-group#exampleGroup4
-                b-form-checkbox-group#exampleChecks(v-model='form.checked')
-                  b-form-checkbox(value='remember') Remember me
-              .d-flex.justify-content-between
-                div
-                  b-button(type='submit', variant='primary') Submit
-                  |&nbsp;
-                  b-button(type='reset', variant='danger') Reset
-                div
-                  a(href='#' v-b-modal.modal1) Forgot Password
-    b-modal#modal1(title="Forgot Password")
-      b-img(src="https://ih0.redbubble.net/image.418429827.6579/ap,550x550,12x16,1,transparent,t.u4.png", fluid alt="Responsive image")
+    .columns
+      .column.is-one-third.is-offset-one-third.m-t-100
+        .card
+          .card-content
+            h1.title Log In
+            form(@submit="onSubmit", method='POST', role='form')
+              .field
+                label.label(for='email') Email Address
+                p.control
+                  input#email.input(class="", type='text', name='email', placeholder='name@example.com', v-model='form.email')
+                //- p.help.is-danger This email is invalid
+              .field
+                label.label(for='password') Password
+                p.control
+                  input#password.input(class="", type='password', name='password', v-model='form.password')
+                //- p.help.is-danger 
+              b-checkbox.m-t-20( v-model='form.checked') Remember Me
+              button.button.is-success.is-outlined.is-fullwidth.m-t-30 Log In
+        h5.has-text-centered.m-t-20
+          a.is-muted(href="") Forgot Your Password?
    
 </template>
 <script>
-import axios from 'axios'
+
 export default {
   name: 'login',
   data() {
@@ -40,6 +38,7 @@ export default {
     }
   },
   methods: {
+    //TODO: email and password check
     onSubmit(evt) {
       evt.preventDefault()
       // alert(JSON.stringify(this.form))
@@ -71,5 +70,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>

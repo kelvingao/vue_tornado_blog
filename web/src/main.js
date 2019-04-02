@@ -1,11 +1,18 @@
 import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
+import Buefy from 'buefy'
+// import 'buefy/dist/buefy.css'
+import 'font-awesome/css/font-awesome.min.css'
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(Buefy, {
+  defaultIconPack: 'fa',
+  // defaultContainerElement: '#content',
+})
 
 import App from './App.vue'
 import VueRouter from 'vue-router'
+
+window.Slug = require('slug')
+Slug.defaults.mode = 'rfc3986'
 
 import store from './store'
 
@@ -17,13 +24,17 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
-import login from '@/components/login.vue'
-import post from '@/components/post.vue'
-import posts from '@/components/widgets/posts.vue'
-import compose from '@/components/compose.vue'
+import login from '@/components/login'
+import post from '@/components/post'
+import compose from '@/components/compose'
+import dashboard from '@/components/dashboard'
+import general from '@/components/dashboard/general'
+import posts from '@/components/dashboard/posts'
+import createPost from '@/components/dashboard/posts/createPost'
+import blog from '@/components/blog'
 
 Vue.use(VueRouter);
-Vue.use(BootstrapVue)
+// Vue.use(BootstrapVue)
 Vue.use(VueVideoPlayer, /* {
   options: global default options,
   events: global videojs events
@@ -41,12 +52,18 @@ const ifAuthenticated = (to, from, next) => {
 }
 
 const router = new VueRouter({
+  linkActiveClass: 'is-active',
   mode: 'history',
   routes: [
-    { path: '/', redirect: '/posts' },
-    { path: '/posts', component: posts },
+    { path: '/', redirect: '/blog' },
+    { path: '/blog', component: blog },
     { path: '/posts/:slug', component: post  },
     { path: '/login', component: login },
+    { path: '/dashboard', component: dashboard, children: [
+      { path: 'general', component: general },
+      { path: 'posts', component: posts },
+      { path: 'posts/create', component: createPost },
+      ]},
     { path: '/compose', component: compose, beforeEnter: ifAuthenticated }
   ]
 });
