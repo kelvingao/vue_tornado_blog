@@ -5,7 +5,7 @@
         .column
           h1.title.is-admin.is-4 Add New Blog Post
       hr.m-t-0
-      form(@submit="onSubmit", method="post", role="form")
+      form(@submit="onSubmit", method="post", role="form" v-if="!submitted")
         .columns
           .column.is-three-quarters
             b-field
@@ -14,8 +14,7 @@
             b-field.m-t-10
               quill-editor(ref='myTextEditor', v-model='post.content.rendered', :options='editorOption')
                   //- code.quill-code.hljs(v-html='contentCode')
-
-
+          
           .column.is-one-quarter
             .card.card-widget.m-r-30
               .author-widget.widget-area
@@ -27,7 +26,7 @@
               .post-status-widget.widget-area
                 .status
                   .status-icon
-                    b-icon(icon="edit" size="is-medium")
+                    b-icon(icon="file-text" size="is-medium")
                   .status-details
                     h4 #[span.status-emphasis Draft] Saved
                     p A Few Minutes Ago 
@@ -36,6 +35,7 @@
                   button.button.is-info.is-outlined.is-fullwidth Save Draft
                 .primary-action-button
                   button.button.is-primary.is-fullwidth Publish
+      div(v-else) Thanks for adding your post!
 
 </template>
 <script>
@@ -57,8 +57,9 @@ export default {
         content: {
           rendered: 'Compose your masterpiece...',
           excerpt: ''
-        }
+        },
       },
+      submitted: false,
       editorOption: {
         modules: {
           toolbar: [
@@ -134,6 +135,13 @@ export default {
 
       const { title, slug, content } = this.post;
       api.createPost({title, slug, content})
+        .then(resp => {
+          this.submitted = true;
+          // this.$router.push('/dashboard/posts')
+        })
+        .catch(err => {
+          alert(err)
+        })
     }
   },
 }

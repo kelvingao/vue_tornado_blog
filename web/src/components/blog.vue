@@ -1,16 +1,12 @@
 <template lang="pug">
-  #blog
-   .container
-      .col-sm-12
-        .jumbotron
-          .container
-              //- span.display-4.h1 珂想而知
-              //- p.lead
-              //-   | 在线视频教育
-        section(v-for='post in recentPosts(limit)')
-          h2 {{ post.title }}
-          router-link.btn.btn-primary(:to="'/posts/' + post.slug") read more
-          hr
+  //- #blog(v-theme:column="'narrow'")
+  #blog.container
+    section.single-blog(v-for='post in recentPosts(limit)')
+      h2 {{ post.title | to-uppercase }}
+      //- h2(v-rainbow) {{ post.title }}
+      //- article(v-html = "post.markdown")
+      hr
+      router-link.btn.btn-primary(:to="'/posts/' + post.slug") read more
 </template>
 
 <script>
@@ -32,8 +28,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
+.single-blog {
+  padding: 20px;
+  margin: 20px 0;
+  box-sizing: border-box;
+  background: #eee;
+}
 </style>
 
 

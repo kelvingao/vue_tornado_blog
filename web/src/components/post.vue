@@ -10,12 +10,11 @@
               //- p 发布于 {{ post.published | formatDate('yyyy-MM-dd') }}
               //- p  更新于 {{ post.updated | formatDate('yyyy-MM-dd') }}
               p.admin-del(v-if='isAuthenticated')
-                div
-                  b-button(v-b-modal.modal-1='') Delete
-                  |&nbsp;
-                  b-button Edit
-                  b-modal#modal-1(title='Want to delete?' ok-variant="danger" @ok="del(post.id)")
-                    p.my-4 Can't resume after deletation!
+                .button-wrapper.wrapper
+                  button.button.is-small(v-b-modal.modal-1 @click.prevent="danger") Delete
+                  button.button.is-small(@click.prevent="edit(post.id)") Edit
+                  //- b-modal#modal-1(title='Want to delete?' ok-variant="danger" @ok="confirmCustomDelete")
+                  //-   p.my-4 Can't resume after deletation!
                   
                 //- a(@click='del(post.id)') [删除]
                 //- a(@click='edit(post.id)') [编辑]
@@ -44,12 +43,30 @@ export default {
     edit(id) {
       // this.$router.push(`/admin/posts/${id}`)
     },
+    danger() {
+      this.$snackbar.open({
+          duration: 5000,
+          message: 'Snackbar with red action, positioned on bottom-left and a callback',
+          type: 'is-danger',
+          position: 'is-bottom-left',
+          actionText: 'Undo',
+          queue: false,
+          onAction: () => {
+              this.$toast.open({
+                  message: 'Action pressed',
+                  queue: false
+              })
+          }
+      })
+    }
   }
 }
 </script>
 
 <style>
-
+.button {
+  margin-left: 5px;
+}
 </style>
 
 

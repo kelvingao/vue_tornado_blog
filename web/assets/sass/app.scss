@@ -2,11 +2,11 @@
 @import "~bulma/sass/utilities/_all";
 
 // Set your colors
-$primary: orange;
+$primary: rgb(240,102,102);
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
-
+// $footer-background-color: white;
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
     "white": ($white, $black),

@@ -2,16 +2,18 @@
   #app
     top
     router-view
-    //- bottom
+    bottom
 </template>
 
 <script>
 import top from '@/components/layout/header.vue'
+import bottom from '@/components/layout/footer.vue'
 
 export default {
   name: 'app',
   components: {
-    top
+    top,
+    bottom
   },
 }
 </script>

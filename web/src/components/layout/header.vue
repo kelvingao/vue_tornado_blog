@@ -4,38 +4,58 @@
       .container
         .navbar-brand
           router-link.navbar-item.ispaddingless.brand-item(to='/')
-            //- img(src='images/devmarketer-logo.png' alt='KeThoughts logo')
-            span.text-logo.is-primary Kethoughts.com
-          router-link.navbar-item.is-tab.is-hidden-mobile.m-l-10(to='#') Learn
-          router-link.navbar-item.is-tab.is-hidden-mobile(to='#') Discuss
-          router-link.navbar-item.is-tab.is-hidden-mobile(to='#') Share
-        .navbar-end.navbar-item
-          b-input(placeholder='Search...', type='search' icon="search")
-          button.button.is-primary Search
-        .navbar-end.nav-menu(v-if="!isAuthenticated")
-          router-link.navbar-item.is-tab(to='/login') Login 
-          router-link.navbar-item.is-tab(to='/register') Sign Up
-        .navbar-end.nav-menu(v-else)
-          .navbar-item.has-dropdown.is-hoverable
-            .navbar-link Hey, Superadministrator
-            .navbar-dropdown.is-right
-              router-link.navbar-item(to='#')
-                span.icon
-                  i.fa.fa-fw.fa-user-circle-o.m-r-5
-                |&nbsp;Profile
-              router-link.navbar-item(to='#')
-                span.icon
-                  i.fa.fa-fw.fa-bell.m-r-5
-                |&nbsp;Notifications
-              router-link.navbar-item(to="/dashboard")
-                span.icon
-                  i.fa.fa-fw.fa-cog.m-r-5
-                |&nbsp;Manage
-              hr.navbar-divider
-              router-link.navbar-item(@click.native="logout" to='/login')
-                span.icon
-                  .fa.fa-fw.fa-sign-out.m-r-5
-                |&nbsp;Logout
+            .text-logo Kethoughts.com
+          .navbar-burger.burger(@click="showNav = !showNav" :class="{'is-active' : showNav}")
+            span
+            span
+            span
+
+        .navbar-menu(:class="{ 'is-active' : showNav }")
+          .navbar-start
+            router-link.navbar-item.is-tab(to='/home')
+              b-icon.m-r-5(icon="home") 
+              | Home
+            router-link.navbar-item.is-tab(to='/tutorials')
+              b-icon.m-r-5(icon="video") 
+              | Tutorials
+            router-link.navbar-item.has-dropdown.is-hoverable(to='/docs')
+              .navbar-link
+                b-icon.m-r-5(icon="book") 
+                | Docs
+              .navbar-dropdown
+                router-link.navbar-item(to='#') Jobs
+                router-link.navbar-item(to='#') Contact
+                hr.navbar-divider
+                router-link.navbar-item(to='#') Report an issue
+
+          .navbar-end
+            .navbar-item
+              b-field
+                b-input(placeholder='Search...', type='search', icon='search' expanded)
+                p.control
+                  button.button.is-primary #[strong Search]
+
+            .navbar-item(v-if="!isAuthenticated")
+              .buttons
+                router-link.button.is-primary.is-outlined(to='/register') #[strong SignUp]
+                router-link.button.is-primary.is-inverted(to='/login') #[strong Login]
+
+            .navbar-item(v-else).has-dropdown.is-hoverable
+              .navbar-link Hey, Kelvingao
+              .navbar-dropdown.is-left
+                router-link.navbar-item(to='#')
+                  b-icon.m-r-5(icon='user-circle-o' size='is-small')
+                  | Profile
+                router-link.navbar-item(to='#')
+                  b-icon.m-r-5(icon='bell' size='is-small')
+                  | Notifications
+                router-link.navbar-item(to="/admin")
+                  b-icon.m-r-5(icon='cog' size='is-small')
+                  | Manage
+                hr.navbar-divider
+                router-link.navbar-item(@click.native="logout" to='/home')
+                  b-icon.m-r-5(icon='sign-out' size='is-small')
+                  | Logout
 
 </template>
 
@@ -43,6 +63,11 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  data() {
+    return {
+      showNav: false,
+    }
+  },
   computed: {
     ...mapGetters([
       'isAuthenticated'
@@ -64,5 +89,8 @@ export default {
     font-weight: bold;
     background-color: whitesmoke;
     padding: 5px;
+  }
+  .button {
+    margin-left: 0px;
   }
 </style>

@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #slug-widget {
   display: flex;
   justify-content: flex-start;

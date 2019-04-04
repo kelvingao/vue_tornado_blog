@@ -4,7 +4,7 @@
       .column
         h1.title This is the posts.index page
       .column
-        router-link.button.is-primary.is-pulled-right(to="/dashboard/posts/create")
+        router-link.button.is-primary.is-pulled-right(to="/admin/posts/create")
           i.fa.fa-user-plus.m-r-10
           |  Create New Post
     hr.m-t-0

@@ -1,47 +1,68 @@
 import Vue from 'vue'
-import Buefy from 'buefy'
-// import 'buefy/dist/buefy.css'
-import 'font-awesome/css/font-awesome.min.css'
-
-Vue.use(Buefy, {
-  defaultIconPack: 'fa',
-  // defaultContainerElement: '#content',
-})
-
 import App from './App.vue'
-import VueRouter from 'vue-router'
-
-window.Slug = require('slug')
-Slug.defaults.mode = 'rfc3986'
 
 import store from './store'
 
-import VueVideoPlayer from 'vue-video-player'
-import 'video.js/dist/video-js.css'
 
+/*--------------------------------------------------------------
+Buefy & font-awesome
+--------------------------------------------------------------*/
+import Buefy from 'buefy'
+import '@fortawesome/fontawesome-free/css/solid.css'
+import '@fortawesome/fontawesome-free/css/fontawesome.css'
+
+Vue.use(Buefy, {
+  defaultIconPack: 'fas',
+  // defaultContainerElement: '#content',
+});
+
+
+/*--------------------------------------------------------------
+Slug generator
+--------------------------------------------------------------*/
+window.Slug = require('slug')
+Slug.defaults.mode = 'rfc3986'
+
+
+/*--------------------------------------------------------------
+Vue-Analytics
+--------------------------------------------------------------*/
+import VueAnalytics from 'vue-analytics'
+
+Vue.use(VueAnalytics, {
+  id: 'UA-1234-5'
+})
+
+
+/*--------------------------------------------------------------
+VueQillEditor
+--------------------------------------------------------------*/
 import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+Vue.use(VueQuillEditor, /* { default global options } */)
+
+
+/*--------------------------------------------------------------
+Custom components
+--------------------------------------------------------------*/
 import login from '@/components/login'
 import post from '@/components/post'
 import compose from '@/components/compose'
-import dashboard from '@/components/dashboard'
-import general from '@/components/dashboard/general'
-import posts from '@/components/dashboard/posts'
-import createPost from '@/components/dashboard/posts/createPost'
+import admin from '@/components/admin'
+import general from '@/components/admin/general'
+import posts from '@/components/admin/posts'
+import createPost from '@/components/admin/posts/createPost'
 import blog from '@/components/blog'
 
-Vue.use(VueRouter);
-// Vue.use(BootstrapVue)
-Vue.use(VueVideoPlayer, /* {
-  options: global default options,
-  events: global videojs events
-} */)
-Vue.use(VueQuillEditor, /* { default global options } */)
 
-Vue.config.productionTip = false
+/*--------------------------------------------------------------
+Custom directives & filters
+--------------------------------------------------------------*/
+import VueRouter from 'vue-router'
+Vue.use(VueRouter);
 
 const ifAuthenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
@@ -59,7 +80,7 @@ const router = new VueRouter({
     { path: '/blog', component: blog },
     { path: '/posts/:slug', component: post  },
     { path: '/login', component: login },
-    { path: '/dashboard', component: dashboard, children: [
+    { path: '/admin', component: admin, children: [
       { path: 'general', component: general },
       { path: 'posts', component: posts },
       { path: 'posts/create', component: createPost },
@@ -67,6 +88,44 @@ const router = new VueRouter({
     { path: '/compose', component: compose, beforeEnter: ifAuthenticated }
   ]
 });
+
+
+/*--------------------------------------------------------------
+Custom directives & filters
+--------------------------------------------------------------*/
+Vue.directive('rainbow', {
+  bind(el, binding, vnode) {
+    el.style.color = '#' + Math.random().toString().slice(2,8);
+  }
+});
+
+Vue.directive('theme', {
+  bind(el, binding, vnode) {
+    if (binding.value == 'wide') {
+      el.style.maxWidth = '1200px';
+    } else if (binding.value == 'narrow') {
+      el.style.maxWidth = '560px';
+    }
+    if(binding.arg == 'column') {
+      el.style.padding = '20px';
+      el.style.background = '#ddd';
+    }
+  }
+});
+
+Vue.filter('to-uppercase', function(value) {
+  return value.toUpperCase();
+});
+
+Vue.filter('snippet', function(value) {
+  return value.slice(0,100) + '...';
+});
+
+
+/*--------------------------------------------------------------
+Vue instance
+--------------------------------------------------------------*/
+Vue.config.productionTip = false
 
 new Vue({
   router,

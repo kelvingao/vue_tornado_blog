@@ -1,4 +1,5 @@
 <template lang='pug'>
+  //- refs: https://buefy.org/documentation/dropdown
   #login
     .columns
       .column.is-one-third.is-offset-one-third.m-t-100
