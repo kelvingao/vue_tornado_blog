@@ -1,10 +1,11 @@
 <template lang='pug'>
   #top
-    nav.navbar.has-shadow
+    nav.navbar.has-shadow.is-dark
       .container
-        .navbar-brand
-          router-link.navbar-item.ispaddingless.brand-item(to='/')
-            .text-logo Kethoughts.com
+        .navbar-brand.is-primary
+          //- router-link.navbar-item.ispaddingless.brand-item(to='/')
+          a.navbar-item.ispaddingless.brand-item.is-rounded(to='/')
+            .logo.title.is-4.has-text-primary.has-background-light.p-5 #[strong Kethoughts.com]
           .navbar-burger.burger(@click="showNav = !showNav" :class="{'is-active' : showNav}")
             span
             span
@@ -43,18 +44,18 @@
             .navbar-item(v-else).has-dropdown.is-hoverable
               .navbar-link Hey, Kelvingao
               .navbar-dropdown.is-left
-                router-link.navbar-item(to='#')
-                  b-icon.m-r-5(icon='user-circle-o' size='is-small')
+                router-link.navbar-item(to='/profile')
+                  b-icon.m-r-5(icon='user-circle')
                   | Profile
-                router-link.navbar-item(to='#')
-                  b-icon.m-r-5(icon='bell' size='is-small')
+                router-link.navbar-item(to='/notifications')
+                  b-icon.m-r-5(icon='bell')
                   | Notifications
                 router-link.navbar-item(to="/admin")
-                  b-icon.m-r-5(icon='cog' size='is-small')
+                  b-icon.m-r-5(icon='cog')
                   | Manage
                 hr.navbar-divider
                 router-link.navbar-item(@click.native="logout" to='/home')
-                  b-icon.m-r-5(icon='sign-out' size='is-small')
+                  b-icon.m-r-5(icon='sign-out-alt')
                   | Logout
 
 </template>
@@ -82,15 +83,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  /deep/ .text-logo {
+  .logo {
     border-radius: 5px;
-    // color: whitesmoke;
-    font-size: 150%;
-    font-weight: bold;
-    background-color: whitesmoke;
-    padding: 5px;
   }
-  .button {
-    margin-left: 0px;
-  }
+
 </style>

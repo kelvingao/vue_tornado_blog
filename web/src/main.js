@@ -38,9 +38,9 @@ Vue.use(VueAnalytics, {
 VueQillEditor
 --------------------------------------------------------------*/
 import VueQuillEditor from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
 
 Vue.use(VueQuillEditor, /* { default global options } */)
 
@@ -51,11 +51,13 @@ Custom components
 import login from '@/components/login'
 import post from '@/components/post'
 import compose from '@/components/compose'
-import admin from '@/components/admin'
+import admin from '@/components/admin/adminLayout'
 import general from '@/components/admin/general'
 import posts from '@/components/admin/posts'
 import createPost from '@/components/admin/posts/createPost'
-import blog from '@/components/blog'
+import PostsPage from '@/components/postsPage'
+import Tutorials from '@/components/tutorials'
+import WeixinPage from '@/components/weixinPage'
 
 
 /*--------------------------------------------------------------
@@ -76,11 +78,13 @@ const router = new VueRouter({
   linkActiveClass: 'is-active',
   mode: 'history',
   routes: [
-    { path: '/', redirect: '/blog' },
-    { path: '/blog', component: blog },
+    { path: '/', redirect: '/home' },
+    { path: '/home', component: PostsPage },
+    { path: '/weixin', component: WeixinPage },
+    { path: '/tutorials', component: Tutorials },
     { path: '/posts/:slug', component: post  },
     { path: '/login', component: login },
-    { path: '/admin', component: admin, children: [
+    { path: '/admin', component: admin, beforeEnter: ifAuthenticated, children: [
       { path: 'general', component: general },
       { path: 'posts', component: posts },
       { path: 'posts/create', component: createPost },

@@ -1,13 +1,10 @@
 <template lang='pug'>
   #posts
-    .columns
-      .column
-        h1.title This is the posts.index page
-      .column
-        router-link.button.is-primary.is-pulled-right(to="/admin/posts/create")
-          i.fa.fa-user-plus.m-r-10
-          |  Create New Post
-    hr.m-t-0
+    section
+      h1.title This is the posts.index page
+      router-link.button.is-primary.is-pulled-right(to="/admin/posts/create")
+        i.fa.fa-user-plus.m-r-10
+        |  Create New Post
 
 </template>
 <script>

@@ -19,6 +19,21 @@ export default {
     })
   },
 
+  getWPPosts(limit) {
+    if (!limit || !_.isNumber(limit) || _.isNull(limit) || typeof limit == "undefined") {
+      limit = CONFIG.PER_PAGE_LIMIT_DEFAULT
+    }
+    return new Promise((resolve, reject) => {
+      axios.get("http://demo.wp-api.org/wp-json/wp/v2/posts?per_page=" + limit)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+
   getPost(slug) {
     return new Promise((resolve, reject) => {
       axios.get(CONFIG.REST_API_URL + "posts?slug=" + slug)

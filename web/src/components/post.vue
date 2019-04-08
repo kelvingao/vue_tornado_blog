@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .button {
   margin-left: 5px;
 }
